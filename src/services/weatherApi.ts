@@ -1,7 +1,8 @@
 import { CurrentWeather, WeatherForecast } from '../types/weather';
 
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
-const BASE_URL = import.meta.env.VITE_OPENWEATHER_BASE_URL;
+const BASE_URL = import.meta.env.VITE_OPENWEATHER_BASE_URL ?? 'https://api.openweathermap.org/data/2.5';
+const GEO_BASE_URL = import.meta.env.VITE_OPENWEATHER_GEO_BASE_URL ?? 'https://api.openweathermap.org';
 
 export class WeatherAPI {
   static async getCurrentWeather(city: string): Promise<CurrentWeather> {
@@ -47,7 +48,7 @@ export class WeatherAPI {
 
   static async searchCities(query: string): Promise<any[]> {
     const response = await fetch(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${API_KEY}`
+      `${GEO_BASE_URL}/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=5&appid=${API_KEY}`
     );
     
     if (!response.ok) {
